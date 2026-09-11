@@ -16,41 +16,45 @@
   },
   "description": "OpenCode port of the Zedokai theme, the Monokai Pro theme from Zed.",
   "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    }
-  },
   "files": [
-    "dist",
     "themes",
+    "scripts",
+    "test",
     "LICENSE",
     "README.md"
   ],
+  "oc-themes": [
+    "themes/zedokai-classic.json",
+    "themes/zedokai-darker-classic.json",
+    "themes/zedokai-darker-filter-machine.json",
+    "themes/zedokai-darker-filter-octagon.json",
+    "themes/zedokai-darker-filter-ristretto.json",
+    "themes/zedokai-darker-filter-spectrum.json",
+    "themes/zedokai-darker.json",
+    "themes/zedokai-filter-machine.json",
+    "themes/zedokai-filter-octagon.json",
+    "themes/zedokai-filter-ristretto.json",
+    "themes/zedokai-filter-spectrum.json",
+    "themes/zedokai-light-filter-sun.json",
+    "themes/zedokai-light.json",
+    "themes/zedokai.json"
+  ],
+  "engines": {
+    "opencode": "^1.18.0"
+  },
   "scripts": {
-    "build": "tsc",
-    "typecheck": "tsc --noEmit",
     "test": "node --test 'test/*.test.ts'",
-    "check": "pnpm typecheck && pnpm build && pnpm test"
+    "check": "pnpm test",
+    "themes": "node scripts/generate-themes.mjs"
   },
   "keywords": [
     "opencode",
+    "opencode-theme",
+    "tui-theme",
     "zedokai",
     "monokai",
-    "theme",
     "zed",
-    "plugin"
+    "theme"
   ],
-  "dependencies": {
-    "@opencode-ai/plugin": "1.18.25"
-  },
-  "devDependencies": {
-    "@types/node": "^24.3.0",
-    "typescript": "^7.0.2"
-  },
-  "engines": {
-    "node": ">=20"
-  },
   "packageManager": "pnpm@11.18.0"
 }

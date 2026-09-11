@@ -23,16 +23,19 @@ Ships all 14 Zed themes, including the Filter variants and the light pair.
 
 ## Install
 
-Add the plugin to your OpenCode config.
-
-```json
-{
-  "$schema": "https://opencode.ai/config.json",
-  "plugin": ["@falentio/opencode-zedokai"]
-}
+```sh
+opencode plugin @falentio/opencode-zedokai
 ```
 
-Pick a theme with `/theme`, or pin one in `tui.json`.
+That is all the setup there is. No JavaScript entrypoint runs. OpenCode reads the `oc-themes` field in `package.json`, copies the bundled theme files into the project theme directory, and the themes appear in `/theme`.
+
+Then pick one:
+
+```sh
+/theme
+```
+
+Or pin it in `tui.json`:
 
 ```json
 {
@@ -41,20 +44,19 @@ Pick a theme with `/theme`, or pin one in `tui.json`.
 }
 ```
 
-## What the plugin does
+## Why there is no plugin code
 
-OpenCode reads custom themes from `~/.config/opencode/themes/` and `<project>/.opencode/themes/`. There is no npm registry for themes, so the plugin writes its bundled JSON into the project theme directory on startup. When the project directory is not writable, it falls back to `~/.config/opencode/themes/`.
+OpenCode resolves theme-only packages from the `oc-themes` manifest field. A package that lists relative theme paths there gets a TUI target with no module to load. This package uses exactly that path, so it ships JSON and nothing else. No dependencies, no build step, no server hook writing files at startup.
 
-Themes are written with `mkdir` plus overwrite, so repeat runs are safe and updates replace stale files.
+The only code in the repo is the generator and the tests. They exist for maintainers, not for users.
 
 ## Develop
 
 ```sh
-pnpm install
-pnpm check
+npm run check
 ```
 
-`pnpm check` runs typecheck, build, and the theme validation tests.
+`npm run check` runs the theme validation tests. There is no build.
 
 ## Regenerate themes
 
@@ -64,7 +66,9 @@ The theme JSON is generated from the upstream Zed theme, not hand-edited. Clone 
 node scripts/generate-themes.mjs /path/to/zedokai/themes/zedokai.json
 ```
 
-`scripts/generate-themes.mjs` holds the one place where Zed's `syntax.*` keys map onto OpenCode's `syntax*` keys.
+`scripts/generate-themes.mjs` holds the one place where Zed's nested `syntax.*` keys map onto OpenCode's `syntax*` keys.
+
+After regenerating, the test suite asserts that `oc-themes` lists exactly the files in `themes/`. If a new upstream theme appears, add it there.
 
 ## Credits
 
