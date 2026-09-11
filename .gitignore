@@ -1,0 +1,8 @@
+node_modules/
+dist/
+coverage/
+.audit/
+.DS_Store
+.opencode/themes/
+opencode-pstack/
+opencode-zedokai/

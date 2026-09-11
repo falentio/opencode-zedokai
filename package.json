@@ -1,0 +1,57 @@
+{
+  "name": "@falentio/opencode-zedokai",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/falentio/opencode-zedokai.git"
+  },
+  "bugs": {
+    "url": "https://github.com/falentio/opencode-zedokai/issues"
+  },
+  "homepage": "https://github.com/falentio/opencode-zedokai#readme",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public",
+    "provenance": true
+  },
+  "description": "OpenCode port of the Zedokai theme, the Monokai Pro theme from Zed.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "themes",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test 'test/*.test.ts'",
+    "check": "pnpm typecheck && pnpm build && pnpm test"
+  },
+  "keywords": [
+    "opencode",
+    "zedokai",
+    "monokai",
+    "theme",
+    "zed",
+    "plugin"
+  ],
+  "dependencies": {
+    "@opencode-ai/plugin": "1.18.25"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "typescript": "^7.0.2"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@11.18.0"
+}
