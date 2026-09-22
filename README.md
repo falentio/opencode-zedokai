@@ -73,6 +73,8 @@ OpenCode v1 read a theme-only package through the `oc-themes` field in `package.
 
 So this package carries the install step itself. `src/tui.ts` is a v2 CLI plugin with a `setup` hook that copies `themes/*.json` into the theme directory and asks the theme system to re-read it. The rest of the package is the theme files and the tools that generate them.
 
+`src/server.ts` registers nothing. The server plugin loader resolves a `./server` entrypoint before it hands the plugin list to the CLI, and a package with only `./tui` makes it fail with `Plugin entrypoint not found`. That failure is reported from the server side, and the CLI then never receives the plugin, so the themes are never installed. The empty server entrypoint exists so the loader accepts the package.
+
 ## Develop
 
 ```sh
