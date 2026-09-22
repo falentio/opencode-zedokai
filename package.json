@@ -17,6 +17,7 @@
   "description": "Zedokai for OpenCode v2. The Monokai Pro theme from Zed, as an OpenCode CLI plugin.",
   "type": "module",
   "exports": {
+    "./server": "./src/server.ts",
     "./tui": "./src/tui.ts"
   },
   "files": [
