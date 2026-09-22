@@ -15,10 +15,13 @@ const pkg = JSON.parse(readFileSync(join(packageRoot, "package.json"), "utf8"));
 
 const themeFiles = readdirSync(themesDir).filter((file) => file.endsWith(".json")).sort();
 
-test("package exposes a v2 TUI entrypoint and no v1 theme manifest", () => {
+test("package exposes both v2 entrypoints so the server loader accepts it", () => {
   assert.equal(pkg["oc-themes"], undefined, "oc-themes is a v1 field and must not be declared");
-  assert.equal(pkg.main, undefined, "the package has no server entrypoint");
-  assert.deepEqual(pkg.exports, { "./tui": "./src/tui.ts" });
+  assert.equal(pkg.main, undefined, "entrypoints belong in exports, not main");
+  assert.deepEqual(pkg.exports, {
+    "./server": "./src/server.ts",
+    "./tui": "./src/tui.ts",
+  });
   assert.match(pkg.engines.opencode, /^\^?2\./, "engines.opencode must require v2");
 });
 

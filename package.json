@@ -1,6 +1,6 @@
 {
   "name": "@falentio/opencode-zedokai",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/falentio/opencode-zedokai.git"
@@ -17,6 +17,7 @@
   "description": "Zedokai for OpenCode v2. The Monokai Pro theme from Zed, as an OpenCode CLI plugin.",
   "type": "module",
   "exports": {
+    "./server": "./src/server.ts",
     "./tui": "./src/tui.ts"
   },
   "files": [
