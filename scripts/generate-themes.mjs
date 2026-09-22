@@ -1,8 +1,15 @@
 // Regenerates themes/*.json from a checkout of https://github.com/slymax/zedokai.
 // Usage: node scripts/generate-themes.mjs /path/to/zedokai/themes/zedokai.json
+//
+// The upstream Zed style is mapped onto the token names opencode v1 used, then
+// opencode's own migrateV1 turns that into a v2 theme document. Keeping the
+// format conversion in opencode's code means the hue scales and semantic
+// references match what the theme system expects, instead of a local guess.
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { migrateV1, ThemeDocument } from "@opencode/theme/tui";
+import { Schema } from "effect";
 
 const THEME_KEYS = [
   "primary",
@@ -128,7 +135,9 @@ function slug(name) {
     .replace(/\s+/g, "-");
 }
 
-function build(style) {
+// A v1-format document. Both modes carry the same colors because the upstream
+// Zed theme defines one palette, not a light/dark pair.
+function v1Document(style) {
   const defs = {};
   const theme = {};
   for (const key of THEME_KEYS) {
@@ -140,7 +149,7 @@ function build(style) {
     defs[name] = hex;
     theme[key] = { dark: name, light: name };
   }
-  return { $schema: "https://opencode.ai/theme.json", defs, theme };
+  return { defs, theme };
 }
 
 rmSync(themesDir, { recursive: true, force: true });
@@ -149,8 +158,9 @@ mkdirSync(themesDir, { recursive: true });
 const written = [];
 for (const theme of upstream.themes) {
   const name = slug(theme.name);
-  const file = build(theme.style);
-  writeFileSync(join(themesDir, `${name}.json`), `${JSON.stringify(file, null, 2)}\n`);
+  const document = { $schema: "https://opencode.ai/theme.json", ...migrateV1(v1Document(theme.style)) };
+  Schema.decodeUnknownSync(ThemeDocument)(document);
+  writeFileSync(join(themesDir, `${name}.json`), `${JSON.stringify(document, null, 2)}\n`);
   written.push(`${name} (${theme.name})`);
 }
 
